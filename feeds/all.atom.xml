@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Unobtrousive</title><link href="/" rel="alternate"></link><link href="//feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2012-07-22T00:00:00+02:00</updated><entry><title>Orwell's rules for writers</title><link href="//Orwell%20rules.html" rel="alternate"></link><updated>2012-07-22T00:00:00+02:00</updated><author><name>Davide</name></author><id>//Orwell rules.html</id><summary type="html">&lt;p&gt;Never use a metaphor, simile, or other figure of speech which you are used to seeing in print.&lt;/p&gt;
+&lt;p&gt;Never use a long word where a short one will do.&lt;/p&gt;
+&lt;p&gt;If it is possible to cut a word out, always cut it out.&lt;/p&gt;
+&lt;p&gt;Never use the passive where you can use the active.&lt;/p&gt;
+&lt;p&gt;Never use a foreign phrase, a scientific word, or a jargon word if you can think of an everyday English equivalent.&lt;/p&gt;
+&lt;p&gt;Break any of these rules sooner than say anything outright barbarous.&lt;/p&gt;</summary><category term="writing"></category></entry><entry><title>Getting started</title><link href="//blogging%20with%20dropbox.html" rel="alternate"></link><updated>2012-07-16T00:00:00+02:00</updated><author><name>Davide</name></author><id>//blogging with dropbox.html</id><summary type="html">&lt;p&gt;Dropbox as blogging platform&lt;/p&gt;
+&lt;p&gt;L'idea di base è di utilizzare una directory pubblica di dropbox come database per una piattaforma di blogging.
+ora sto modificando il testo, vediamo se viene aggiornato automaticamente.
+Piattaforma che consentirà di pubblicare blog orientati alla scrittura e all'insegna del minialismo, ne deriva una struttura molto semplice focalizzata sul contenuto.
+Non sono previsiti infatti, almeno in questa fase, commenti, integrazione con social network o altro.&lt;/p&gt;
+&lt;p&gt;Il database di fatto non esiste, è in sostanza costituito da file di testo memorizzati in una directory, che contengono ciascuno un articolo del blog, il testo può essere scritto anche utilizzando le regole del markdown.&lt;/p&gt;
+&lt;p&gt;I file vengono memorizzati all'interno della directory pubblica del proprio account di dropbox, si utilizza in questa fase una directory pubblica poiché non richiede autenticazione da parte dell'applicazione. In ogni caso, se non diversamente autorizzato, è solo l'utente ad avere accesso alla propria directory pubblica.
+Da valutare in seguito se integrare le API di dropbox per consentire all'utente di utilizzare una qualsiasi directory del proprio dropobox.&lt;/p&gt;
+&lt;p&gt;All'inizio del file di testo ci dovranno essere alcuni meta data che contengono il titolo dell'articolo, la data e l'ora, le categorie separate da virgola. I meta data per comodità sono preceduti da identificatori particolari, ipotizziamo di creare il file &lt;code&gt;articolo1.txt&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;TITLE&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Titolo&lt;/span&gt; &lt;span class="n"&gt;dell&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;articolo&lt;/span&gt;
+&lt;span class="s1"&gt;DATE: gg/mm/aa hh:mm&lt;/span&gt;
+&lt;span class="s1"&gt;CATEGORY: eventuale categoria&lt;/span&gt;
+&lt;span class="s1"&gt;Da qui in poi il testo dell&amp;#39;&lt;/span&gt;&lt;span class="n"&gt;articolo&lt;/span&gt; &lt;span class="n"&gt;contenuto&lt;/span&gt; &lt;span class="n"&gt;nel&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="n"&gt;articolo1&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="na"&gt;txt&lt;/span&gt;&lt;span class="o"&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Lo script PHP, che per esemplificare chiameremo &lt;code&gt;post.php&lt;/code&gt; dovrà così rilevare la presenza dei file contenuti nella directory e memorizzarne il contenuto per esempio in un array di variabili. Per ogni indice dell'array un file e quindi un articolo.&lt;/p&gt;
+&lt;p&gt;Nel caso del file articolo1.txt in quattro variabili dell'array sarà memorizzato il seguemte testo:&lt;/p&gt;
+&lt;p&gt;$title = Titolo dell'articolo&lt;/p&gt;
+&lt;p&gt;$date = gg/mm/aa hh:mm&lt;/p&gt;
+&lt;p&gt;$category = eventuale categoria&lt;/p&gt;
+&lt;p&gt;$content = Da qui in poi il testo dell'articolo contenuto nel file articolo1.txt&lt;/p&gt;
+&lt;p&gt;Attraverso un file di configurazione (che consentirà di specificare anche altre opzioni) si potrà decidere quanti articoli (indici dell'array) visualizzare. Si determinerà così il numero di articoli (partendo dal più recente) che l'utente visualizzerà accedendo alla pagina index.php.
+In pratica si otterrebbe una visualizzazione tipo &lt;a href="http://www.gallesi.net/md/post.html" title="Blog di prova"&gt;questa&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Ciò che immagino è la possibilità di richiamare all'interno della pagina  index.php lo script esterno post.php, che restituirà in sequenza  il numero di articoli specificato nel file di configurazione.
+La pagina conterrà anche l'HTML e il CSS che servirà per realizzare il template del sito vero e proprio, ad esempio menu, barra laterale etc.&lt;/p&gt;
+&lt;h3&gt;Template della pagina&lt;/h3&gt;
+&lt;p&gt;Per realizzare il template dovrà essere possibile utlizzare liberamente le variabili che compongona la struttura dell'articolo, nel nostro esempio $title, $date, $category, $content.&lt;/p&gt;
+&lt;p&gt;Questo per poterle disporre a piacimento nel layout di pagina e poterle associare a un tag, utilizzabile poi nel foglio di stile CSS&lt;sup id="fnref:css"&gt;&lt;a href="#fn:css" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt; modificandone gli attributi grafici.&lt;/p&gt;
+&lt;p&gt;In pratica si deve poter realizzare un template tipo questo.&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id =&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;titolo&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;`
+    &lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;title&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id =&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;data&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;date&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id =&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;post&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;content&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Avendo specificato nel file di configurazione di visualizzare i tre articoli più recenti si avrà questa visualizzazione.&lt;/p&gt;
+&lt;p&gt;Identificando con un id specifico ciascun elemento sarà possibile controllarlo e formattarlo in maniera opportuna tramite il foglio di stile CSS.
+Volendo per esempio che il titolo del post sia in Arial, 24px, grassetto e centrato nel file CSS potremo specficare:&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="c"&gt;#titolo&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+
+    &lt;span class="n"&gt;font&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;bold&lt;/span&gt; 24&lt;span class="n"&gt;px&lt;/span&gt; &lt;span class="n"&gt;Arial&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Helvetica&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sans&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;serif&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+    &lt;span class="nb"&gt;text&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;align&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="nb"&gt;center&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Così se volessimo visualizzare la data sopra il titolo non faremo altro che spostare il div id "data" sopra il div id "titolo".
+ Questo metodo ci consente un totale controllo del layout della pagina.&lt;/p&gt;
+&lt;h3&gt;Markdown&lt;/h3&gt;
+&lt;p&gt;Come dicevo è possibile scrivere il testo dell'articolo utilizzando il markdown, un metodo di scrittura che consente di definire attraverso semplici identificatori, alcuni elementi che poi vengono trasformati in HTML quando la pagina viene renderizzata.
+Il markdown è stato inventato da John Gruber &lt;a href="http://www.daringfireball.net/markdown"&gt;qui&lt;/a&gt; se ne posso trovare i dettagli.
+Ne è stata realizzata anche una evoluzione che si chiama mutimarkdown.
+Esiste poi un porting in PHP molto semplice da utilizzare che si può trovare &lt;a href="http://michelf.com/projects/php-markdown/extra/"&gt;qui&lt;/a&gt;.
+Molti editor di testo per desktop, iPad e iPhone supportano questo tipo di linguaggio e la sincronizzazione con Dropbox.&lt;/p&gt;
+&lt;p&gt;Volendo è anche possibile inserire direttamente del codice html nel testo.
+Questo è per esempio un video VIMEO inserito utilizzando html.
+&lt;iframe src="http://player.vimeo.com/video/25833596?title=0&amp;amp;byline=0&amp;amp;portrait=0" width="651" height="366" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen&gt;&lt;/iframe&gt;
+Questa pagina è stata scritta anche con un iPad utilizzando l'applicazione &lt;a href="http://bywordapp.com/"&gt;Byword&lt;/a&gt; e il mutimarkdown. Il file index.php risiede sul server, va aleggere un file memorizzato nella directory pubblica del mio dropbox, ne interpreta il contenuto utilizzando la libreria markdown.php che genera l'HTML che a sua volta vine formattato da un foglio di stile CSS sempre memorizzato sul server.&lt;/p&gt;
+&lt;p&gt;Non mi dilungo sulla sintassi del markdown, se ne può trovare una descrizione dettagliata ai link di cui sopra.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://dl.dropbox.com/u/3336261/post/body.md"&gt;Qui&lt;/a&gt; potete vedere il testo sorgente di questo documento memorizzato su Dropbox.&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn:css"&gt;
+&lt;p&gt;CSS o Cascade Style Sheet è un file esterno che consente di modificare gli attributi (font, colore, posizione, dimensione...) degli elementi contenuti in una pagina HTML. Il browser effettuerà il rendering della pagina HTML utilizzando gli attributi CSS associati. In mancanza di CSS utlizzera gli stili standard.&amp;#160;&lt;a href="#fnref:css" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</summary><category term="prova"></category></entry><entry><title>My super title</title><link href="//my-super-post.html" rel="alternate"></link><updated>2012-07-13T00:00:00+02:00</updated><author><name>Davide</name></author><id>//my-super-post.html</id><summary type="html">&lt;p&gt;This is the first paragraph of the document.&lt;/p&gt;
+&lt;p&gt;Ora vediamo se riesco a modificare il file.&lt;/p&gt;</summary><category term="thats"></category><category term="awesome"></category></entry><entry><title>Questo è il primo post</title><link href="//il%20primo%20post%20con%20Pelican.html" rel="alternate"></link><updated>2012-07-09T00:00:00+02:00</updated><author><name>Davide</name></author><id>//il primo post con Pelican.html</id><summary type="html">&lt;p&gt;This is the first paragraph of the document.&lt;sup id="fnref:fn1"&gt;&lt;a href="#fn:fn1" rel="footnote"&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Ora provo un po' di markdown&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;italic&lt;/em&gt;
+&lt;strong&gt;bold&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="codehilite"&gt;&lt;pre&gt;&lt;span class="n"&gt;questa&lt;/span&gt; è &lt;span class="n"&gt;una&lt;/span&gt; &lt;span class="n"&gt;riga&lt;/span&gt; &lt;span class="n"&gt;di&lt;/span&gt; &lt;span class="n"&gt;codice&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;blockquote&gt;
+&lt;p&gt;Questo è un blockquoute&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Ora sto modificando il testo dal mio iPad. Sembra che funzioni, devo solo capire come specificare nel file di configurazione il percorso con i sorgenti.
+Chissá se supporta le subdirectory...&lt;/p&gt;
+&lt;p&gt;Ora sto modificando con byword&lt;/p&gt;
+&lt;div class="footnote"&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id="fn:fn1"&gt;
+&lt;p&gt;Questa è una footnote&amp;#160;&lt;a href="#fnref:fn1" rev="footnote" title="Jump back to footnote 1 in the text"&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;</summary><category term="prova"></category></entry><entry><title>Post di prova</title><link href="//questo%20%C3%A8%20un%20post.html" rel="alternate"></link><updated>2011-07-16T00:00:00+02:00</updated><author><name>Davide</name></author><id>//questo è un post.html</id><summary type="html">&lt;h1&gt;Titolo&lt;/h1&gt;
+&lt;p&gt;Scrivendo delle cose a capocchia. Vediamo se tutto è sistemato. Sembrerebbe di si, ora provo a salvare il file e vediamo se viene rigenerato tutto.&lt;/p&gt;
+&lt;p&gt;Ora inserisco un link al sito di &lt;a href="http://www.telestar-automation.it"&gt;Telestar&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Ora provo il Markdown&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Questo&lt;/li&gt;
+&lt;li&gt;è&lt;/li&gt;
+&lt;li&gt;un elenco&lt;/li&gt;
+&lt;li&gt;puntato&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;italic&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;bold&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Ora sto scrivendo del testo aggiuntivo solo per fare un'ulteriore prova di pubblicazione.&lt;/p&gt;
+&lt;p&gt;Oggi è il 17 luglio, sto modificando nuovamente il testo.&lt;/p&gt;</summary><category term="prova"></category></entry></feed>
